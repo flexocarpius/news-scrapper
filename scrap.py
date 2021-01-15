@@ -1,3 +1,5 @@
+from feeds.usatoday_scraper import UsaTodayScraper
+from feeds.nytimes_scraper import NYTimesScraper
 from feeds.clarin_scraper import ClarinScraper
 from feeds.debate_scraper import ElDebateScraper
 from data.spreadsheet import ExcelWriter
@@ -74,6 +76,36 @@ def clarin():
         'Description',
         'Creator',
         'Category'
+    ])
+    writer.close()
+
+@extract.command()
+def nytimes():
+    click.echo('Scraping from NY Times feed...')
+    scraper = NYTimesScraper()
+    writer = ExcelWriter('nytimes.xlsx')
+    scrap_page(scraper=scraper, writer=writer, headers=[
+        'GUID',
+        'Title',
+        'Link',
+        'Publication Date',
+        'Description',
+        'Creator'
+    ])
+    writer.close()
+
+@extract.command()
+def usatoday():
+    click.echo('Scraping from USA Today feed...')
+    scraper = UsaTodayScraper()
+    writer = ExcelWriter('usatoday.xlsx')
+    scrap_page(scraper=scraper, writer=writer, headers=[
+        'GUID',
+        'Title',
+        'Link',
+        'Publication Date',
+        'Description',
+        'Creator'
     ])
     writer.close()
 
