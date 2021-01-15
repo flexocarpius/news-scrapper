@@ -2,3 +2,6 @@
 __pycache__/
 ~$news.xlsx
 news.xlsx
+clarin.xlsx
+debate.xlsx
+.vscode/launch.json

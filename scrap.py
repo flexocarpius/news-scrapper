@@ -1,3 +1,5 @@
+from feeds.clarin_scraper import ClarinScraper
+from feeds.debate_scraper import ElDebateScraper
 from data.spreadsheet import ExcelWriter
 from feeds.el_vigia_scrapper import ElVigiaScrapper
 import click
@@ -28,7 +30,7 @@ def vigia():
     click.echo('Scraping from El Vigia feed...')
     scraper = ElVigiaScrapper()
     writer = ExcelWriter('news.xlsx')
-    writer.write_headers(headers=[
+    scrap_page(scraper=scraper, writer=writer, headers=[
         'ID',
         'Title',
         'Link',
@@ -39,9 +41,46 @@ def vigia():
         'Author URI',
         'Author Email'
     ])
+    writer.close()
+
+@extract.command()
+def debate():
+    click.echo('Scraping from El Debate feed...')
+    scraper = ElDebateScraper()
+    writer = ExcelWriter('debate.xlsx')
+    scrap_page(scraper=scraper, writer=writer, headers=[
+        'GUID',
+        'Title',
+        'Link',
+        'Publication Date',
+        'Description',
+        'Creator',
+        'Category',
+        'Content',
+        'Media'
+    ])
+    writer.close()
+
+@extract.command()
+def clarin():
+    click.echo('Scraping from Clarin feed...')
+    scraper = ClarinScraper()
+    writer = ExcelWriter('clarin.xlsx')
+    scrap_page(scraper=scraper, writer=writer, headers=[
+        'GUID',
+        'Title',
+        'Link',
+        'Publication Date',
+        'Description',
+        'Creator',
+        'Category'
+    ])
+    writer.close()
+
+def scrap_page(scraper=None, writer=None, headers=None):
+    writer.write_headers(headers=headers)
     for entry in scraper.scrap():
         writer.write_model(entry)
-    writer.close()
 
 if __name__ == "__main__":
     cli()

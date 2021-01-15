@@ -15,7 +15,7 @@ class ExcelWriter():
         cols = model.to_array()
         for i in range(0, len(cols)):
             self.worksheet.write(self.current_row, i, cols[i])
-            self.current_row = self.current_row + 1
+        self.current_row = self.current_row + 1
 
     def write_models(self, models):
         for model in models:
